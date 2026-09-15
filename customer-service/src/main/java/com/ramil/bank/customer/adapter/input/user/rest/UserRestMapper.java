@@ -8,5 +8,5 @@ public interface UserRestMapper {
 
     User mapToDomain(UserRequest userRequest);
 
-    UserRequest mapToUserRequest(User user);
+    UserResponse mapToUserResponse(User user);
 }

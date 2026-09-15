@@ -1,5 +1,6 @@
 package com.ramil.bank.customer.application.user.port.input;
 
+import com.ramil.bank.customer.adapter.input.user.rest.UserResponse;
 import com.ramil.bank.customer.domain.user.User;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.UUID;
 
 public interface UserPortIn {
 
-    User create(User user);
+    UserResponse create(User user);
 
-    List<User> getAll();
+    List<UserResponse> getAll();
 
     void deleteById(UUID id);
 
-    User update(UUID id, User user);
+    UserResponse update(UUID id, User user);
 }

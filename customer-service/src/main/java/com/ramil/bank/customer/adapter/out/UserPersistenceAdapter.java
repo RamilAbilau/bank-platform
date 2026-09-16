@@ -2,6 +2,7 @@ package com.ramil.bank.customer.adapter.out;
 
 import com.ramil.bank.customer.application.user.port.output.UserPortOut;
 import com.ramil.bank.customer.domain.user.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,15 @@ public class UserPersistenceAdapter implements UserPortOut {
 
     @Override
     public User save(User user) {
-        var userEntity = userEntityMapper.mapToEntity(user);
+        var userEntity = userEntityMapper.toEntity(user);
         var savedUserEntity = userRepository.save(userEntity);
-        return userEntityMapper.mapToDomain(savedUserEntity);
+        return userEntityMapper.toDomain(savedUserEntity);
     }
 
     @Override
     public List<User> getAll() {
         var users = userRepository.findAll();
-        return users.stream().map(userEntityMapper::mapToDomain).toList();
+        return users.stream().map(userEntityMapper::toDomain).toList();
     }
 
     @Override
@@ -35,13 +36,15 @@ public class UserPersistenceAdapter implements UserPortOut {
     }
 
     @Override
-    public User update(UUID id, User user) {
-        if (userRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("User does not exist");
+    public User update(User user) {
+        var existingUser = userRepository.findById(user.getId());
+
+        if (existingUser.isEmpty()) {
+            throw new EntityNotFoundException("User does not exist");
         }
-        var userEntity = userRepository.findById(id);
-        var updatedUserEntity = userEntityMapper.update(user, userEntity.get());
+
+        var updatedUserEntity = userEntityMapper.update(user, existingUser.get());
         var savedUserEntity = userRepository.save(updatedUserEntity);
-        return userEntityMapper.mapToDomain(savedUserEntity);
+        return userEntityMapper.toDomain(savedUserEntity);
     }
 }

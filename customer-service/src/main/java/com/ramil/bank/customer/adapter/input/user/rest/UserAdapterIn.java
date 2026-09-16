@@ -23,34 +23,31 @@ import java.util.UUID;
 @Slf4j
 public class UserAdapterIn {
 
-    private final UserPortIn userPortIn;
-
-    private final UserRestMapper userRestMapper;
+    private final UserPortIn portIn;
+    private final UserRestMapper mapper;
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
-        log.info("POST method create user");
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userPortIn.create(userRestMapper.mapToDomain(userRequest)));
+        var user = mapper.toDomain(userRequest);
+        var createdUser = portIn.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(createdUser));
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAll() {
-        log.info("GET method get all users");
-        return ResponseEntity.ok(userPortIn.getAll());
+        return ResponseEntity.ok(portIn.getAll().stream().map(mapper::toResponse).toList());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable UUID id) {
-        log.info("DELETE method delete user with id: {}", id);
-        userPortIn.deleteById(id);
+        portIn.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable UUID id, @RequestBody UserRequest userRequest) {
-        log.info("PUT method update user with id: {}", id);
-        return ResponseEntity.ok(userPortIn.update(id, userRestMapper.mapToDomain(userRequest)));
+    @PutMapping
+    public ResponseEntity<UserResponse> update(@RequestBody UserRequest userRequest) {
+        var user = mapper.toDomain(userRequest);
+        var updatedUser = portIn.update(user);
+        return ResponseEntity.ok(mapper.toResponse(updatedUser));
     }
 }

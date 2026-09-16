@@ -1,4 +1,6 @@
 package com.ramil.bank.customer.adapter.input.user.rest;
 
-public record UserRequest(String name, String surname) {
+import java.util.UUID;
+
+public record UserRequest(UUID id, String name, String surname) {
 }

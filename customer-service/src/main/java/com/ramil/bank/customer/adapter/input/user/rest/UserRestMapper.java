@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserRestMapper {
 
-    User mapToDomain(UserRequest userRequest);
+    User toDomain(UserRequest userRequest);
 
-    UserResponse mapToUserResponse(User user);
+    UserResponse toResponse(User user);
 }

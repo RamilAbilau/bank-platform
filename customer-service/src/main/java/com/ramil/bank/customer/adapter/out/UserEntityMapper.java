@@ -8,9 +8,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserEntityMapper {
 
-    UserEntity mapToEntity(User user);
+    UserEntity toEntity(User user);
 
-    User mapToDomain(UserEntity userEntity);
+    User toDomain(UserEntity userEntity);
 
     @Mapping(target = "id", ignore = true)
     UserEntity update(User user,@MappingTarget UserEntity userEntity);

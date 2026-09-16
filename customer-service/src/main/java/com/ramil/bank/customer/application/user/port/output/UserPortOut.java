@@ -13,5 +13,5 @@ public interface UserPortOut {
 
     void deleteById(UUID id);
 
-    User update(UUID id, User user);
+    User update(User user);
 }

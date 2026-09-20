@@ -28,7 +28,6 @@ function RegisterForm({ onSubmit, onLoginClick }: RegisterFormProps) {
             passportId,
             email,
             password,
-            confirmPassword,
         });
     };
 

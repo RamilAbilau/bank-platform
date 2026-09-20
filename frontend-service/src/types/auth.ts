@@ -9,5 +9,4 @@ export interface RegisterFormData {
     passportId: string;
     email: string;
     password: string;
-    confirmPassword: string;
 }
